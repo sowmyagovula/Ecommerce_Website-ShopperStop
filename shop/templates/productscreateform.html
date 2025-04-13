@@ -1,0 +1,23 @@
+{% extends "layout.html" %} 
+{% block title %}create form{% endblock %} 
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">ShopperStop Create Portal</h1>
+
+    <h5>{% if form.instance.pk %}
+        Edit Tweet {% else %}
+        Create Tweet 
+       {% endif %}
+       <hr>
+
+    <form method="POST" enctype="multipart/form-data" class="p-4 bg-dark text-white rounded shadow">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-primary px-4 py-2">Submit</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

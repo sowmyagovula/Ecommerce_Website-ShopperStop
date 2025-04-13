@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<h1 class= "text-center mb-5">Register</h1>
+<div class="text-justify mx-5 px-5 py-2">
+    <form method="POST" class='form '>
+        {% csrf_token %} 
+        {{form.as_p}}
+        <button class="btn mb-5 btn-success">Register</button>
+
+    </form>
+
+    <p>Already have an account?<a href="{% url 'login' %}">Login here</a></p>
+</div>
+{% endblock %}

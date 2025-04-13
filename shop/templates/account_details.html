@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}Account{% endblock %}
+
+{% block content %}
+<div class=" mt-4">
+    <h1 class="text-center">My Account</h1>
+    <h4 class="text-center text-success mt-5">Account Details</h4>
+
+    <h5>User Name: {{ user.username }}</h5>
+    <h5>Email: {{ user.email }}</h5>
+    <h5>User Type: {{ user.user_type }}</h5>
+
+
+    <div class="mt-4">
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Date Joined:</strong> {{ user.date_joined }}</p>
+        <p><strong>User Type:</strong> {{ Profile.user_type }}</p>
+    </div>
+
+    {% if user_type == "seller" %}
+    <hr>
+    <div class="mt-5">
+        <h4 class="text-primary">Your Product Posts</h4>
+        {% if products %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-3">
+                {% for product in products %}
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.product_name }}">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ product.brand }}</h6>
+                                <h5 class="card-title">{{ product.product_name }}</h5>
+                                <p class="card-text">{{ product.desc }}</p>
+                                <p class="card-text"><strong>Price:</strong> ${{ product.price }}</p>
+                                <p class="card-text"><strong>Category:</strong> {{ product.category }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-muted mt-3">No products posted yet.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

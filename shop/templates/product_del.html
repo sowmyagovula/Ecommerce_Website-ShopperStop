@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}delete{% endblock %}
+
+{% block content %}
+<div class="text-center mt-4">
+    <h3>Delete this Product?</h3>
+    <h5 class="text-danger mt-5">Are you sure you want to delete this Product?</h5>
+
+    <form method="POST" >
+        {% csrf_token %}
+        <button class="btn mt-4 btn-danger">Delete it</button>
+        <a class="btn mt-4 btn-primary" href="{% url 'products' %}">Cancel</a>
+
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <hr><div style="color: #f578f4;"><hr>
+    <h2 class="mb-4">Makeup Products</h2>
+    <div class="row">
+        {% for product in makeup_products %}
+            <div class="col-md-4 d-flex align-items-stretch mb-4"> 
+                <div class="card w-100 h-100 d-flex flex-column">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.product_name }}">
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title">{{ product.brand }}</h6>
+                        <h5 class="card-title">{{ product.product_name }}</h5>
+                        <p class="card-text text-justify">{{ product.desc }}</p>
+                        <p class="card-text text-center mt-auto"><strong>Price:</strong> ${{product.price}}</p>
+            
+                        {% if product.user == user and user_type == 'seller' %}
+                            <div class="d-flex justify-content-between mt-3">
+                                <a href="{% url 'product_edit' product.id %}" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="{% url 'product_del' product.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            </div>
+                        {% endif %}
+
+                        {% if user.is_authenticated and user_type == 'buyer' %}
+                            <div class="d-flex justify-content-center my-3">
+                                <a href="#" class="btn w-100 text-white fw-semibold shadow py-2 px-3" 
+                                style="background: linear-gradient(45deg, #540b4f, #ff69b4); border: none; transition: all 0.3s ease-in-out;"
+                                onmouseover="this.style.transform='scale(1.02)'" 
+                                onmouseout="this.style.transform='scale(1)'">
+                                    <i class="bi bi-cart-plus-fill me-2"></i> Add to Cart
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <hr><div style="color: #69b38e"><hr>
+    <h2 class="mb-4">Skin Care Products</h2>
+    <div class="row">
+        {% for product in skincare_products %}
+            <div class="col-md-4 d-flex align-items-stretch mb-4"> 
+                <div class="card w-100 h-100 d-flex flex-column">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.product_name }}">
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title">{{ product.brand }}</h6>
+                        <h5 class="card-title">{{ product.product_name }}</h5>
+                        <p class="card-text text-justify">{{ product.desc }}</p>
+                        <p class="card-text text-center mt-auto"><strong>Price:</strong> ${{product.price}}</p>
+            
+                        {% if product.user == user and user_type == 'seller' %}
+                            <div class="d-flex justify-content-between mt-3">
+                                <a href="{% url 'product_edit' product.id %}" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="{% url 'product_del' product.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            </div>
+                        {% endif %}
+                        {% if user.is_authenticated and user_type == 'buyer' %}
+                            <div class="d-flex justify-content-center my-3">
+                                <a href="#" class="btn w-100 text-white fw-semibold shadow py-2 px-3" 
+                                style="background: linear-gradient(45deg, #125238, #90f0c0); border: none; transition: all 0.3s ease-in-out;"
+                                onmouseover="this.style.transform='scale(1.02)'" 
+                                onmouseout="this.style.transform='scale(1)'">
+                                    <i class="bi bi-cart-plus-fill me-2"></i> Add to Cart
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}
