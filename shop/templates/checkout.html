@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container my-5 text-center">
+    <h2>Thank You for Your Order! 🎉</h2>
+    <p>Your order ID is <strong>#{{ order.id }}</strong></p>
+    <p>Order placed on {{ order.created_at }}</p>
+    <a href="{% url 'products' %}" class="btn btn-primary mt-3">Continue Shopping</a>
+</div>
+{% endblock %}

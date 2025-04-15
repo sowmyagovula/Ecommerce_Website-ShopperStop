@@ -5,44 +5,110 @@
 {% block content %}
 <div class=" mt-4">
     <h1 class="text-center">My Account</h1>
-    <h4 class="text-center text-success mt-5">Account Details</h4>
 
-    <h5>User Name: {{ user.username }}</h5>
-    <h5>Email: {{ user.email }}</h5>
-    <h5>User Type: {{ user.user_type }}</h5>
-
-
-    <div class="mt-4">
-        <p><strong>Username:</strong> {{ user.username }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>Date Joined:</strong> {{ user.date_joined }}</p>
-        <p><strong>User Type:</strong> {{ Profile.user_type }}</p>
+    <div class="d-flex justify-content-center mt-4">
+        <div class="card" style="width: 50%;">
+            <h4 class="card-title text-center text-success mt-3">Account Details</h4>
+            <div class="card-text">
+                <table class="table table-bordered mt-3">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Username</th>
+                            <td>{{ user.username|capfirst }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Email</th>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Date Joined</th>
+                            <td>{{ user.date_joined }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">User Type</th>
+                            <td>{{ user_type|capfirst }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
-    {% if user_type == "seller" %}
+    {% if user_type %}
+        <div class="my-5">
+            <h4 class="text-primary text-center">Logged in as: {{ user_type|capfirst }}</h4>
+        </div>
+    {% endif %}
+
+    {% if user_type == 'seller' %}
+        <hr>
+        <div class="my-4">
+            <h4 class="text-center text-success my-4">Your Product Posts:</h4>
+            {% if products %}
+                <div class="row">
+                    {% for product in products %}
+                        <div class="col-md-4 d-flex align-items-stretch mb-4"> 
+                            <div class="card w-100 h-100 d-flex flex-column">
+                                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.product_name }}">
+                                <div class="card-body d-flex flex-column">
+                                    <h6 class="card-title">{{ product.brand }}</h6>
+                                    <h5 class="card-title">{{ product.product_name }}</h5>
+                                    <p class="card-text text-justify">{{ product.desc }}</p>
+                                    <p class="card-text text-center mt-auto"><strong>Price:</strong> ${{ product.price }}</p>
+
+                                    {% if product.user == user and user_type == 'seller' %}
+                                        <div class="d-flex justify-content-between mt-3">
+                                            <a href="{% url 'product_edit' product.id %}" class="btn btn-primary btn-sm">Edit</a>
+                                            <a href="{% url 'product_del' product.id %}" class="btn btn-danger btn-sm">Delete</a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted text-center">You haven't posted any products yet.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+    
+    {% if user_type == 'buyer' %}
     <hr>
-    <div class="mt-5">
-        <h4 class="text-primary">Your Product Posts</h4>
-        {% if products %}
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-3">
-                {% for product in products %}
-                    <div class="col">
-                        <div class="card h-100 shadow-sm">
-                            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.product_name }}">
-                            <div class="card-body">
-                                <h6 class="card-title">{{ product.brand }}</h6>
-                                <h5 class="card-title">{{ product.product_name }}</h5>
-                                <p class="card-text">{{ product.desc }}</p>
-                                <p class="card-text"><strong>Price:</strong> ${{ product.price }}</p>
-                                <p class="card-text"><strong>Category:</strong> {{ product.category }}</p>
+    <div class="d-flex justify-content-center mt-4">
+        <div class="card shadow p-4" style="width: 60%;">
+            <h2 class="text-success text-center mb-4">Your Orders</h2>
+
+            {% if orders %}
+                <div class="accordion" id="orderAccordion">
+                    {% for order in orders %}
+                    <div class="accordion-item mb-3">
+                        <h2 class="accordion-header" id="heading{{ order.id }}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ order.id }}" aria-expanded="false" aria-controls="collapse{{ order.id }}">
+                                Order ID #{{ order.id }} | Placed on {{ order.created_at|date:"M d, Y" }}
+                            </button>
+                        </h2>
+                        <div id="collapse{{ order.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ order.id }}" data-bs-parent="#orderAccordion">
+                            <div class="accordion-body">
+                                <ul class="list-group mb-3">
+                                    {% for item in order.items.all %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ item.product.product_name }} <span class="badge bg-secondary rounded-pill">x{{ item.quantity }}</span>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% comment %} <p class="text-end fw-bold">Total: ${{ order.total_amount }}</p> {% endcomment %}
                             </div>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p class="text-muted mt-3">No products posted yet.</p>
-        {% endif %}
+                    {% empty %}
+                        <p class="text-center text-muted">You haven't placed any orders yet.</p>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted text-center my-3">You have not placed any orders yet.</p>
+            {% endif %}
+        </div>
     </div>
     {% endif %}
 

@@ -27,14 +27,26 @@
                         {% endif %}
 
                         {% if user.is_authenticated and user_type == 'buyer' %}
-                            <div class="d-flex justify-content-center my-3">
-                                <a href="#" class="btn w-100 text-white fw-semibold shadow py-2 px-3" 
-                                style="background: linear-gradient(45deg, #540b4f, #ff69b4); border: none; transition: all 0.3s ease-in-out;"
-                                onmouseover="this.style.transform='scale(1.02)'" 
-                                onmouseout="this.style.transform='scale(1)'">
-                                    <i class="bi bi-cart-plus-fill me-2"></i> Add to Cart
-                                </a>
-                            </div>
+                            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                                {% csrf_token %}
+                                <div class="cart-btn-wrapper">
+                                    <div class="cart-btn-container">
+                                        <button href="javascript:void(0);" class="btn w-100 text-white fw-semibold shadow py-2 px-3" 
+                                            style="background: linear-gradient(45deg, #540b4f, #ff69b4); border: none; transition: all 0.3s ease-in-out;"
+                                            onmouseover="this.style.transform='scale(1.02)'" 
+                                            onmouseout="this.style.transform='scale(1)'"
+                                            onclick="showQuantitySelector(this)" type="submit">
+                                            <i class="bi bi-cart-plus-fill me-2"></i> Add to Cart
+                                    </button>
+                                    </div>
+                                    {% comment %} <div class="quantity-selector d-none input-group mt-2" style="width: 100%;">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="decreaseQty(this)">-</button>
+                                        <input type="text" class="form-control text-center quantity-input" value="1" readonly>
+                                        <button class="btn btn-outline-secondary" type="button" onclick="increaseQty(this)">+</button>
+                                        <button type="submit" class="btn btn-outline-dark ms-2">✔ Add</button>
+                                    </div> {% endcomment %}
+                                </div>
+                            </form>
                         {% endif %}
                     </div>
                 </div>
@@ -61,21 +73,55 @@
                             </div>
                         {% endif %}
                         {% if user.is_authenticated and user_type == 'buyer' %}
-                            <div class="d-flex justify-content-center my-3">
-                                <a href="#" class="btn w-100 text-white fw-semibold shadow py-2 px-3" 
-                                style="background: linear-gradient(45deg, #125238, #90f0c0); border: none; transition: all 0.3s ease-in-out;"
-                                onmouseover="this.style.transform='scale(1.02)'" 
-                                onmouseout="this.style.transform='scale(1)'">
-                                    <i class="bi bi-cart-plus-fill me-2"></i> Add to Cart
-                                </a>
+                        <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                            {% csrf_token %}
+                            <div class="cart-btn-wrapper">
+                                <div class="cart-btn-container">
+                                    <button href="javascript:void(0);" class="btn w-100 text-white fw-semibold shadow py-2 px-3" 
+                                        style="background: linear-gradient(45deg, #540b4f, #ff69b4); border: none; transition: all 0.3s ease-in-out;"
+                                        onmouseover="this.style.transform='scale(1.02)'" 
+                                        onmouseout="this.style.transform='scale(1)'"
+                                        onclick="showQuantitySelector(this)" type="submit">
+                                        <i class="bi bi-cart-plus-fill me-2"></i> Add to Cart
+                                </button>
+                                </div>
+                            
                             </div>
+                        </form>
                         {% endif %}
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
+    {% comment %} <script>
+        function showQuantitySelector(btn) {
+            const wrapper = btn.closest('.cart-btn-wrapper');
+            wrapper.querySelector('.cart-btn-container').style.display = 'none';
+            wrapper.querySelector('.quantity-selector').classList.remove('d-none');
+        }
+    
+        function increaseQty(btn) {
+            const wrapper = btn.closest('.cart-btn-wrapper');
+            const qtyInput = wrapper.querySelector('.quantity-input');
+            qtyInput.value = parseInt(qtyInput.value) + 1;
+        }
+    
+        function decreaseQty(btn) {
+            const wrapper = btn.closest('.cart-btn-wrapper');
+            const qtyInput = wrapper.querySelector('.quantity-input');
+            const currentQty = parseInt(qtyInput.value);
+            if (currentQty > 1) {
+                qtyInput.value = currentQty - 1;
+            } else {
+                wrapper.querySelector('.cart-btn-container').style.display = 'block';
+                wrapper.querySelector('.quantity-selector').classList.add('d-none');
+            }
+        }
+    </script> {% endcomment %}
 </div>
+
+
 
 
 {% endblock %}
