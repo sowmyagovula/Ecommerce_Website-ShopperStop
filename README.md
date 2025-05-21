@@ -2,6 +2,8 @@
 
 Welcome to **ShopperStop**, a Django-based eCommerce web application designed to provide a simple yet powerful online shopping experience for both buyers and sellers. This project was built with the goal of learning and implementing full-stack web development using Django, Python, and HTML/CSS.
 
+live server: https://ecommerce-website-shopperstop.onrender.com
+
 ---
 
 ## 🔥 Features
