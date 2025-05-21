@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-9*5e)#gmvv^sxd7v-)7*+xf#bel8hw=)c%$53xmv$0#rh_0=81
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost',"ecommerce-website-shopperstop.onrender.com"]
 
 
 # Application definition
@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'django_browser_reload',
+
+    # 'rest_framework',
+    # 'rest_framework.authtoken',
 ]
 
 TAILWIND_APP_NAME = 'theme'
